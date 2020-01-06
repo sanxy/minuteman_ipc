@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "319256427738",
+    "firebase_url": "https://minuteman-ipc.firebaseio.com",
+    "project_id": "minuteman-ipc",
+    "storage_bucket": "minuteman-ipc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319256427738:android:049eaeab3a34fb56e8b9e3",
+        "android_client_info": {
+          "package_name": "com.minuteman_ipc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319256427738-cui8so27unqsd3q7gdhmno67dm60oeja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.minuteman_ipc",
+            "certificate_hash": "c31f00a7e8e499f7d2773d5ff731c2a08a6fd41b"
+          }
+        },
+        {
+          "client_id": "319256427738-md2859ubknla605e216pgc7t909o5hmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnatTy3DEgtTDc_YJhJCJiOt3eoW3tpqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319256427738-md2859ubknla605e216pgc7t909o5hmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
