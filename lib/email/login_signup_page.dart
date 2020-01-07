@@ -47,6 +47,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           //save email to prefs
           final prefs = await SharedPreferences.getInstance();
           prefs.setString('email_key', _email);
+          prefs.setString('user_id_key', userId);
 
           print('Signed in: $userId');
         } else {

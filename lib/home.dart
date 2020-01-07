@@ -4,6 +4,7 @@ import 'package:minuteman_ipc/irrigation_add.dart';
 import 'package:minuteman_ipc/model/reminder.dart';
 import 'package:minuteman_ipc/model/reminder_irrigation.dart';
 import 'package:minuteman_ipc/schedule_add.dart';
+import 'package:minuteman_ipc/schedule_irrgation_add.dart';
 import 'package:minuteman_ipc/services/authentication.dart';
 import 'settings.dart';
 import 'calendar.dart';
@@ -23,7 +24,6 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -65,13 +65,15 @@ class HomeState extends State<Home> {
 
               //Pest control feed
               GestureDetector(
-                onTap: () =>
-                // show bottom sheet with menu items
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext ctx) {
-                      return HomeMenus(fontSize: fontSize);
-                    }),
+                onTap: () {
+//                  navigateToPestControlFeed();
+                  // show bottom sheet with menu items
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext ctx) {
+                        return HomeMenus(fontSize: fontSize);
+                      });
+                },
 
                 child: Card(
                   child: Column(
@@ -120,13 +122,16 @@ class HomeState extends State<Home> {
 
               //Irrigation
               GestureDetector(
-                onTap: () =>
-                // show bottom sheet with menu items
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext ctx) {
-                      return HomeMenus(fontSize: fontSize);
-                    }),
+                onTap: () {
+                  navigateToIrrigation();
+
+                  // show bottom sheet with menu items
+//                showModalBottomSheet(
+//                    context: context,
+//                    builder: (BuildContext ctx) {
+//                      return HomeMenus(fontSize: fontSize);
+//                    }),
+                },
                 child: Card(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center, //add this
@@ -199,8 +204,12 @@ class HomeState extends State<Home> {
             ],
             // landscape mode.
             crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-            childAspectRatio: orientation == Orientation.portrait ? 8.0 / 8.8 : 6.0/4.2,
-            padding: orientation == Orientation.portrait ? EdgeInsets.all(4.0) : EdgeInsets.all(1.0),
+            childAspectRatio: orientation == Orientation.portrait
+                ? 8.0 / 8.8
+                : 6.0 / 4.2,
+            padding: orientation == Orientation.portrait
+                ? EdgeInsets.all(4.0)
+                : EdgeInsets.all(1.0),
           );
         },
       ),
@@ -208,21 +217,34 @@ class HomeState extends State<Home> {
     );
   }
 
+  navigateToPestControlFeed() =>
+      Navigator.of(context).push(
+          new PageRouteBuilder(pageBuilder: (_, __, ___) =>
+          new SchedulePage(
+//          title: new Text(),
+//        event: MyEvent(reminderKinds[index], null, null),
+            fontSize: fontSize,
+          )));
+
+  navigateToIrrigation() =>
+      Navigator.of(context).push(new PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new ScheduleIrrigationPage()));
+
   void navigateToSettings() =>
-    Navigator.of(context).push(new PageRouteBuilder(pageBuilder: (_, __, ___)
-    => new Settings(auth: new Auth())));
+      Navigator.of(context).push(new PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new Settings()));
 
   navigateToCalendar() =>
-      Navigator.of(context).push(new PageRouteBuilder(pageBuilder: (_, __, ___)
-      => new Calendar()));
+      Navigator.of(context).push(
+          new PageRouteBuilder(pageBuilder: (_, __, ___) => new Calendar()));
 
   navigateToEmail() =>
-      Navigator.of(context).push(new PageRouteBuilder(pageBuilder: (_, __, ___)
-      => new EmailSetUp(auth: new Auth())));
+      Navigator.of(context).push(new PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new EmailSetUp(auth: new Auth())));
 
   navigateToHowToUseApp() =>
-      Navigator.of(context).push(new PageRouteBuilder(pageBuilder: (_, __, ___)
-      => new HowToUseApp()));
+      Navigator.of(context).push(
+          new PageRouteBuilder(pageBuilder: (_, __, ___) => new HowToUseApp()));
 
 }
 
@@ -237,25 +259,26 @@ class HomeMenus extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       itemCount: reminderKinds.length,
-      itemBuilder: (ctx, idx) => FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-          side: BorderSide(color: Colors.black12),
-        ),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(height: 8),
-            Text(
-              reminderKinds[idx].key,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: fontSize - 2),
-            )
-          ],
-        ),
-        onPressed: () => onClick(context, idx),
-      ),
+      itemBuilder: (ctx, idx) =>
+          FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+              side: BorderSide(color: Colors.black12),
+            ),
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(height: 8),
+                Text(
+                  reminderKinds[idx].key,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: fontSize - 2),
+                )
+              ],
+            ),
+            onPressed: () => onClick(context, idx),
+          ),
       padding: EdgeInsets.all(4),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
@@ -270,65 +293,12 @@ class HomeMenus extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (builder) => SchedulePage(
-          title: reminderKinds[index].key.toUpperCase(),
-          event: MyEvent(reminderKinds[index], null, null),
-          fontSize: fontSize,
-        ),
-      ),
-    );
-  }
-}
-
-class HomeIrrigationMenus extends StatelessWidget {
-  final double fontSize;
-
-  const HomeIrrigationMenus({Key key, this.fontSize}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: reminderIrrigationKinds.length,
-      itemBuilder: (ctx, idx) => FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-          side: BorderSide(color: Colors.black12),
-        ),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-//            Icon(reminderIrrigation[idx].icons),
-            Container(height: 8),
-            Text(
-              reminderIrrigationKinds[idx].key,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: fontSize - 2),
-            )
-          ],
-        ),
-        onPressed: () => onClickTwo(context, idx),
-      ),
-      padding: EdgeInsets.all(16),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        childAspectRatio: 1.2,
-      ),
-    );
-  }
-
-  void onClickTwo(BuildContext context, int index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (builder) => IrrigationPage(
-          title: reminderIrrigationKinds[index].key.toUpperCase(),
-          event: MyEvent2(reminderIrrigationKinds[index], null, null),
-          fontSize: fontSize,
-        ),
+        builder: (builder) =>
+            SchedulePage(
+              title: reminderKinds[index].key.toUpperCase(),
+              event: MyEvent(reminderKinds[index], null, null),
+              fontSize: fontSize,
+            ),
       ),
     );
   }

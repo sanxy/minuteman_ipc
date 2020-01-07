@@ -34,6 +34,8 @@ class _HomePageState extends State<HomePage> {
     try {
       await widget.auth.signOut();
       widget.logoutCallback();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.clear();
 
     } catch (e) {
       print(e);

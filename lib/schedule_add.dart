@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 //import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +7,7 @@ import 'package:minuteman_ipc/model/app_state.dart';
 import 'package:minuteman_ipc/model/reminder.dart';
 import 'package:recase/recase.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
+
 //import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -31,7 +32,7 @@ class SchedulePageState extends State<SchedulePage> {
   DateTime _pickedTime = DateTime.now();
   List<DateTime> _pickedDate = [
     DateTime.now(),
-    DateTime.now().add(Duration(days: 7)),
+//    DateTime.now().add(Duration(days: 7)),
   ];
   String _desc = '';
 
@@ -51,62 +52,21 @@ class SchedulePageState extends State<SchedulePage> {
         children: <Widget>[
           Container(height: 18),
           Container(height: 32),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextField(
-              maxLines: 1,
-              controller: _controller..text = _desc,
-              onChanged: (str) => _desc = str,
-              style: TextStyle(fontSize: widget.fontSize),
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 16.0,
-                  ),
-                  labelText: 'Detail Activity',
-                  hasFloatingPlaceholder: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  )),
-            ),
-          ),
           Container(height: 18),
-          Builder(
-            builder: (ctx) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: buildActionButton(
-                'Set Date',
-                getDaySelected(),
-                () => showCalendarPicker(ctx),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: buildActionButton(
-              'Set Hour',
-              _pickedTime == null
-                  ? '00:00'
-                  : '${DateFormat.Hm().format(_pickedTime)}',
-              showTimePicker,
-            ),
-          ),
           SizedBox(
-            height: 200,
-            child: CupertinoDatePicker(
-              initialDateTime: _pickedTime,
-              mode: CupertinoDatePickerMode.time,
-              onDateTimeChanged: (dateTime){
-                print(dateTime);
-                setState(() {
-                  _pickedTime = dateTime;
-//                  debugPrint(_pickedTime);
-                });
-              },
-            )
-          ),
-
-          Container(height: 120),
+              height: 200,
+              child: CupertinoDatePicker(
+                initialDateTime: _pickedTime,
+                mode: CupertinoDatePickerMode.dateAndTime,
+                onDateTimeChanged: (dateTime) {
+                  print(dateTime);
+                  setState(() {
+                    _pickedTime = dateTime;
+//                    _pickedDate = dateTime as List<DateTime>;
+                  });
+                },
+              )),
+          Container(height: 80),
           Center(
             child: RaisedButton(
               color: Colors.cyan,
@@ -152,7 +112,6 @@ class SchedulePageState extends State<SchedulePage> {
             ),
         ],
       ),
-
     );
   }
 
@@ -190,7 +149,6 @@ class SchedulePageState extends State<SchedulePage> {
     );
   }
 
-
   void showTimePicker() {
     CupertinoDatePicker(
         initialDateTime: _pickedTime,
@@ -200,9 +158,7 @@ class SchedulePageState extends State<SchedulePage> {
             _pickedTime = dateTime;
 //                  debugPrint(_pickedTime);
           });
-        }
-
-    );
+        });
   }
 
 //  void showTimePicker() {
@@ -251,8 +207,6 @@ class SchedulePageState extends State<SchedulePage> {
     return (startStr == stopStr) ? '$startStr' : '$startStr - $stopStr';
   }
 }
-
-
 
 //class CustomPicker extends CommonPickerModel {
 //  String digits(int value, int length) {

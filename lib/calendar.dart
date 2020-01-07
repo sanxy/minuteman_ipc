@@ -115,38 +115,7 @@ class CalendarState extends State<Calendar> {
         },
       ),
 
-//      Column(
-//        children: <Widget>[
-//          Container(
-//            margin: EdgeInsets.symmetric(horizontal: 26.0),
-//            height: 330,
-//            child: CalendarCarousel<Event>(
-//              headerTextStyle:
-//              TextStyle(fontSize: fontSize + 5, color: Colors.blue),
-//              weekdayTextStyle:
-//              TextStyle(fontSize: fontSize, color: Colors.red),
-//              onDayPressed: (DateTime date, List<Event> l) {
-//                if (!mounted) return;
-//                setState(() => _selectedDate = date);
-//              },
-//              weekendTextStyle: TextStyle(
-//                color: Colors.red,
-//              ),
-//              locale: 'id',
-//              thisMonthDayBorderColor: Colors.grey,
-//              showHeaderButton: false,
-//              selectedDateTime: _selectedDate,
-//            ),
-//          ),
-//          Padding(
-//            padding: const EdgeInsets.symmetric(vertical: 8),
-//            child:
-//            Text('Schedule List', style: TextStyle(fontSize: fontSize + 4)),
-//          ),
-//          getScheduleList(),
-////          getScheduleList2()
-//        ],
-//      ),
+
     );
   }
 

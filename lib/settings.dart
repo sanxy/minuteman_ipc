@@ -4,14 +4,15 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:minuteman_ipc/model/todo.dart';
 import 'package:minuteman_ipc/services/authentication.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
-  Settings({Key key, this.auth, this.userId, this.logoutCallback})
+  Settings({Key key, this.auth, this.logoutCallback})
       : super(key: key);
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;
-  final String userId;
+
 
   @override
   State<StatefulWidget> createState() {
@@ -30,22 +31,47 @@ class SettingsState extends State<Settings> {
   StreamSubscription<Event> _onTodoChangedSubscription;
 
   Query _todoQuery;
+  String userIdRetrieved;
+
+  // get user id saved in shared prefs
+  loadSharedPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userIdRetrieved = (prefs.getString('user_id_key') ?? "");
+      print(userIdRetrieved);
+    });
+
+  }
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      restore();
+    });
 
-    //_checkEmailVerification();
+    // Load to do list after micro second
+    _getThingsOnStartup().then((value){
+      print('Async done');
 
-    _todoList = new List();
-    _todoQuery = _database
-        .reference()
-        .child("todo")
-        .orderByChild("userId")
-        .equalTo(widget.userId);
-    _onTodoAddedSubscription = _todoQuery.onChildAdded.listen(onEntryAdded);
-    _onTodoChangedSubscription =
-        _todoQuery.onChildChanged.listen(onEntryChanged);
+    });
+
+
+  }
+
+  Future _getThingsOnStartup() async {
+    await Future.delayed(Duration(microseconds: 1));
+    setState(() {
+      _todoList = new List();
+      _todoQuery = _database
+          .reference()
+          .child("todo")
+          .orderByChild("userId")
+          .equalTo(userIdRetrieved);
+      _onTodoAddedSubscription = _todoQuery.onChildAdded.listen(onEntryAdded);
+      _onTodoChangedSubscription =
+          _todoQuery.onChildChanged.listen(onEntryChanged);
+    });
   }
 
   @override
@@ -74,7 +100,7 @@ class SettingsState extends State<Settings> {
 
   addNewTodo(String todoItem) {
     if (todoItem.length > 0) {
-      Todo todo = new Todo(todoItem.toString(), widget.userId, false);
+      Todo todo = new Todo(todoItem.toString(), userIdRetrieved, false);
       _database.reference().child("todo").push().set(todo.toJson());
     }
   }
@@ -176,19 +202,7 @@ class SettingsState extends State<Settings> {
     }
   }
 
-  Widget _getFAB() {
-    if (_todoList.isEmpty) {
-      return Container();
-    } else {
-      return FloatingActionButton(
-        onPressed: () {
-          showAddTodoDialog(context);
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      );
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -207,5 +221,12 @@ class SettingsState extends State<Settings> {
           tooltip: 'Increment',
           child: Icon(Icons.add),
         ));
+  }
+
+
+  restore() async {
+    setState(() {
+      loadSharedPrefs();
+    });
   }
 }

@@ -74,27 +74,6 @@ final reminderKinds = [
   )
 ];
 
-//final reminderIrrigationKinds = [
-//  Reminder2(
-//    'Port 1',
-//  ),
-//  Reminder2(
-//    'Port 2',
-//  ),
-//  Reminder2(
-//    'Port 3',
-//  ),
-//  Reminder2(
-//    'Port 4',
-//  ),
-//  Reminder2(
-//    'Port 5',
-//  ),
-//
-//  Reminder2(
-//    'Port 6',
-//  )
-//];
 
 
 
